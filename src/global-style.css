@@ -1,11 +1,9 @@
 .custom-table {
-    text-align: center;
     vertical-align: middle;
     font-size: 1.1em;
 }
 
 .custom-table td {
-    text-align: center;
     vertical-align: middle;
     padding: .2rem;
     cursor: pointer;
@@ -24,4 +22,12 @@
     float: right;
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.manage-button-div {
+    float: right;
+}
+
+.header-column-text {
+    padding-left: 0px;
 }

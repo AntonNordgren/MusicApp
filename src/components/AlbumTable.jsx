@@ -18,6 +18,10 @@ export default class AlbumTable extends React.Component {
             showDeleteModal: false,
             showEditModal: false,
 
+            tableHeaderStyle: {
+                "padding-left" : "0px"
+            },
+
             albumFocus: {
                 id: "",
                 artist: "",
@@ -195,13 +199,13 @@ export default class AlbumTable extends React.Component {
     render() {
         const result = this.state.albumList.map((album) => 
             <tr className="custom-table" key={album.name}>
-                <td className="table-img"><img src={album.img} className="table-img"></img></td>
+                <td className=""><img src={album.img} className="table-img"></img></td>
                 <td>{album.artist}</td>
                 <td>{album.name}</td>
                 <td>{album.genre}</td>
                 <td>{album.year}</td>
                 <td>
-                    <ButtonGroup aria-label="Button Group">
+                    <ButtonGroup className="manage-button-div" aria-label="Button Group">
                         <Button variant="primary" size="sm" onClick={() => this.toggleEditModal(album)}>
                             <svg className="bi bi-wrench" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fillRule="evenodd" d="M.102 2.223A3.004 3.004 0 003.78 5.897l6.341 6.252A3.003 3.003 0 0013 16a3 3 0 10-.851-5.878L5.897 3.781A3.004 3.004 0 002.223.1l2.141 2.142L4 4l-1.757.364L.102 2.223zm13.37 9.019L13 11l-.471.242-.529.026-.287.445-.445.287-.026.529L11 13l.242.471.026.529.445.287.287.445.529.026L13 15l.471-.242.529-.026.287-.445.445-.287.026-.529L15 13l-.242-.471-.026-.529-.445-.287-.287-.445-.529-.026z" clipRule="evenodd"/>
@@ -345,15 +349,15 @@ export default class AlbumTable extends React.Component {
                 </div>
 
 
-                <Table hover className="custom-table">
-                    <thead className="custom-table">
+                <Table hover>
+                    <thead>
                         <tr>
-                            <th></th>
-                            <th>Artist/Band</th>
-                            <th>Title</th>
-                            <th>Genre</th>
-                            <th>Year</th>
-                            <th></th>
+                            <th style={this.state.tableHeaderStyle}></th>
+                            <th style={this.state.tableHeaderStyle}>Artist/Band</th>
+                            <th style={this.state.tableHeaderStyle}>Title</th>
+                            <th style={this.state.tableHeaderStyle}>Genre</th>
+                            <th style={this.state.tableHeaderStyle}>Year</th>
+                            <th style={this.state.tableHeaderStyle}></th>
                         </tr>
                     </thead>
                     <tbody>

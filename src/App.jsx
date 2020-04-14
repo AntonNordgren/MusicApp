@@ -14,7 +14,7 @@ import Navigation from './components/Navigation.jsx'
 import Footer from './components/Footer.jsx'
 import NoMatch from './components/NoMatch.jsx'
 
-import 'bootswatch/dist/materia/bootstrap.min.css'
+import 'bootswatch/dist/flatly/bootstrap.min.css'
 import './global-style.css'
 
 class App extends React.Component {
