@@ -5,36 +5,55 @@ const PORT = 3000
 
 app.use(bodyparser.json())
 
-const MongoClient = require('mongodb').MongoClient
+// const MongoClient = require('mongodb').MongoClient
 const ObjectId = require('mongodb').ObjectID
-const assert = require('assert');
+// const assert = require('assert');
 
-const url = 'mongodb://localhost:27017';
-const dbName = 'albums';
+// const url = 'mongodb://localhost:27017';
+// const dbName = 'albums';
+
+
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://user1:user1Password@albums.yvbte.mongodb.net/music?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.get('/api/data', (req, res) => {
 
-    MongoClient.connect(url, (err, client) => {
-        const db = client.db(dbName);
-        const collection = db.collection('albums')
+    // client.connect(err => {
+    //     const collection = client.db("music").collection("albums")
+    //     console.log(collection.find({}).toArray((err, docs) => {res.send(docs)}))
+    //     return client.close(() => console.log('closed'))
+    // })
+    
+    MongoClient.connect(uri, (err, client) => {
+        const collection = client.db("music").collection("albums")
+        console.log(collection.find({}).toArray((err, docs) => {res.send(docs)}))
 
-        collection.find({}).toArray((err, docs) => {
-            res.send(docs)
-        })
-
-        client.close();
+        return client.close()
     })
+
+    // MongoClient.connect(url, (err, client) => {
+    //     const db = client.db(dbName);
+    //     const collection = db.collection('albums')
+
+    //     collection.find({}).toArray((err, docs) => {
+    //         res.send(docs)
+    //     })
+
+    //     client.close();
+    // })
     
 })
 
 app.post('/api/data', (req, res) => {
     const data = req.body
 
-    console.log(data)
+    // console.log(data)
 
-    MongoClient.connect(url, (err, client) => {
-        const db = client.db(dbName);
-        const collection = db.collection('albums')
+    // const collection = client.db("music").collection("albums")
+
+    MongoClient.connect(uri, (err, client) => {
+        const collection = client.db("music").collection("albums")
 
         collection.insertOne({
             "artist": data.artist,
@@ -44,11 +63,51 @@ app.post('/api/data', (req, res) => {
             "img": data.img,
         })
         .then(data => {
-            if (data.result.n === 1) res.json({ status:'OK' })
+            if (data.result.n === 1) res.json({ status: 'OK' })
             else res.json({ status: 'Error' })
         })
+
+        client.close()
     })
-})
+
+
+    // client.connect(err => {
+    //     // const db = client.db('music');
+    //     // const collection = db.collection('albums')
+
+    //     const collection = client.db("music").collection("albums")
+
+    //     collection.insertOne({
+    //         "artist": data.artist,
+    //         "name": data.title,
+    //         "genre": data.genre,
+    //         "year": data.year,
+    //         "img": data.img,
+    //     })
+    //     .then(data => {
+    //         if (data.result.n === 1) res.json({ status: 'OK' })
+    //         else res.json({ status: 'Error' })
+    //     })
+
+    //     client.close()
+    });
+
+    // MongoClient.connect(url, (err, client) => {
+    //     const db = client.db(dbName);
+    //     const collection = db.collection('albums')
+
+    //     collection.insertOne({
+    //         "artist": data.artist,
+    //         "name": data.title,
+    //         "genre": data.genre,
+    //         "year": data.year,
+    //         "img": data.img,
+    //     })
+    //     .then(data => {
+    //         if (data.result.n === 1) res.json({ status:'OK' })
+    //         else res.json({ status: 'Error' })
+    //     })
+    // })
 
 app.delete('/api/data/:id', (req, res) => {
     let albumId
@@ -57,13 +116,13 @@ app.delete('/api/data/:id', (req, res) => {
         albumId = new ObjectId(req.params.id)
     }
     catch (error) {
+        console.log('errror!')
         res.status(422).json({ message: `Invalid id format: ${error}` })
         return
     }
 
-    MongoClient.connect(url, (err, client) => {
-        const db = client.db(dbName);
-        const collection = db.collection('albums')
+    MongoClient.connect(uri, (err, client) => {
+        const collection = client.db("music").collection("albums")
 
         collection.deleteOne({ _id: albumId }).then((data) => {
             if (data.result.n === 1) res.json({ status:'OK' })
@@ -80,10 +139,12 @@ app.delete('/api/data/:id', (req, res) => {
 })
 
 app.put('/api/data/:id', (req, res) => {
-    MongoClient.connect(url, (err, client) => {
+    MongoClient.connect(uri, (err, client) => {
         
-        const db = client.db(dbName);
-        const collection = db.collection('albums')
+        // const db = client.db(dbName);
+        // const collection = db.collection('albums')
+
+        const collection = client.db("music").collection("albums")
         const editedAlbum = req.body
 
         let newAlbumQuery = {
